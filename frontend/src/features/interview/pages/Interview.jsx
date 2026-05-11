@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Code2, MessageSquare, Map, ChevronDown, LayoutDashboard, User, Calendar, Star } from 'lucide-react'
+import { Code2, MessageSquare, Map, ChevronDown, LayoutDashboard, User, Calendar, Star, Download } from 'lucide-react'
 import { useInterview } from '../hooks/UseInterview.js'
 
 
@@ -59,7 +59,8 @@ const {report}= useInterview();
 // ─── MAIN DASHBOARD ───────────────────────────────────────────
 const Interview = () => {
   const [tab, setTab] = useState('technical')
-  const {report}= useInterview();
+  const [downloadingPdf, setDownloadingPdf] = useState(false)
+  const { report, getResumePdf } = useInterview();
   if (!report) {
    return (
       <div className="text-white p-10">
@@ -126,6 +127,43 @@ const Interview = () => {
               {label}
             </button>
           ))}
+
+          {/* DOWNLOAD PDF — pushed to bottom */}
+          <div className='mt-auto pt-4'>
+            <button
+              onClick={async () => {
+                setDownloadingPdf(true)
+                try {
+                  await getResumePdf(report._id)
+                } finally {
+                  setDownloadingPdf(false)
+                }
+              }}
+              disabled={downloadingPdf}
+              className='w-full flex items-center justify-center gap-2 py-3 rounded-xl text-xs font-semibold transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0'
+              style={{
+                background: downloadingPdf
+                  ? 'rgba(231,15,91,0.15)'
+                  : 'linear-gradient(135deg, #e70f5b 0%, #c4134f 60%, #9c0f3f 100%)',
+                boxShadow: downloadingPdf ? 'none' : '0 4px 20px rgba(231,15,91,0.25)',
+                color: '#fff',
+              }}
+            >
+              {downloadingPdf ? (
+                <>
+                  <svg className='animate-spin w-3.5 h-3.5' viewBox='0 0 24 24' fill='none'>
+                    <circle cx='12' cy='12' r='10' stroke='currentColor' strokeWidth='3' strokeDasharray='31.4 31.4' strokeLinecap='round' />
+                  </svg>
+                  Generating…
+                </>
+              ) : (
+                <>
+                  <Download size={13} strokeWidth={2.5} />
+                  Download Resume
+                </>
+              )}
+            </button>
+          </div>
         </div>
 
         {/* ── MAIN CONTENT ── */}
