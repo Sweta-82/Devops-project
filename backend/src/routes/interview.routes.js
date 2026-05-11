@@ -1,7 +1,7 @@
 import express from "express";
 import { authUser } from "../middlewares/auth.middleware.js";
 import { upload } from "../middlewares/file.middleware.js";
-import { generateReportController } from "../controller/interview.controller.js";
+import { generateReportController, getAllInterviewReportsController, getInterviewReportByIdController } from "../controller/interview.controller.js";
 export const InterviewRouter= express.Router();
 
 /**
@@ -11,3 +11,17 @@ export const InterviewRouter= express.Router();
  * generateReportController
  */
 InterviewRouter.post("/", authUser, upload.single("resume"), generateReportController);
+
+/**
+ * @route GET /api/interview/reports/:interviewId
+ * @desc Get the interview report by its ID. Only the user who created the report can access it.
+ * @access private
+ */
+InterviewRouter.get("/reports/:interviewId", authUser, getInterviewReportByIdController);
+
+/**
+ * @route GET /api/interview/reports
+ * @desc Get all interview reports of the logged in user.
+ * @access private
+ */
+InterviewRouter.get("/", authUser, getAllInterviewReportsController);
