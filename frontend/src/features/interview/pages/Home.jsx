@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { UploadCloud, Zap, FileText } from 'lucide-react'
 import { useNavigate } from 'react-router'
 import { useInterview } from '../hooks/UseInterview.js'
@@ -8,9 +8,14 @@ const Home = () => {
   const [jdCount, setJdCount] = useState(0)
   const [jobDescription, setJobDescription] = useState("")
   const [selfDescription, setSelfDescription] = useState("")
-  const fileRef = useRef();
-const { loading, generateReport } = useInterview();
+const fileRef = useRef();
+const { loading, generateReport, reports, getReports } = useInterview();
   const navigate= useNavigate();
+  
+  useEffect(() => {
+    getReports();
+  }, []);
+
   const handleGenerateReport= async()=>{
     const resumeFile= fileRef.current?.files?.[0] || null;
    const data= await generateReport({ jobDescription, selfDescription, resumeFile })
@@ -144,6 +149,60 @@ const { loading, generateReport } = useInterview();
 
           </div>
         </div>
+        {/* Reports Section */}
+        {reports?.length > 0 && (
+          <div className='mt-16'>
+            <div className='flex items-center justify-between mb-6'>
+              <h2 className='text-2xl font-black text-white tracking-tight'>
+                Recent <span className='text-[#e70f5b]'>Reports</span>
+              </h2>
+            </div>
+            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5'>
+              {reports?.map((report, index) => {
+                const dateObj = new Date(report.createdAt || Date.now());
+                const dateStr = dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                const timeStr = dateObj.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+                
+                return (
+                  <div 
+                    key={index} 
+                    onClick={() => navigate(`/interview/report/${report._id}`)}
+                    className='group cursor-pointer bg-[#0f0d12]/60 border border-white/[0.05] rounded-2xl p-6 
+                      backdrop-blur-xl hover:bg-[#141118]/80 hover:border-[#e70f5b]/30 hover:shadow-[0_8px_32px_rgba(231,15,91,0.08)] 
+                      transition-all duration-500 relative overflow-hidden flex flex-col justify-between min-h-[160px]'
+                  >
+                    {/* Background glow effect on hover */}
+                    <div className='absolute -inset-24 bg-[#e70f5b]/10 blur-3xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none' />
+
+                    <div className='relative z-10'>
+                      <div className='flex justify-between items-start mb-3 gap-4'>
+                        <h3 className='text-lg font-bold text-[#f0ede8] group-hover:text-white transition-colors line-clamp-2 leading-tight'>
+                          {report.title || "Software Developer"}
+                        </h3>
+                        <div className={`flex flex-col items-end shrink-0 ${report.matchScore >= 80 ? 'text-[#0fe782]' : report.matchScore >= 50 ? 'text-[#e7a80f]' : 'text-[#e70f5b]'}`}>
+                          <span className='text-xl font-black leading-none'>{report.matchScore || 0}%</span>
+                          <span className='text-[9px] uppercase tracking-wider font-semibold opacity-80'>Match</span>
+                        </div>
+                      </div>
+                      
+                      <p className='text-[#6b6966] text-xs mb-4 line-clamp-2 font-light'>
+                        {report.resumeText ? report.resumeText.substring(0, 100) + '...' : "Detailed analysis of your resume against the job description."}
+                      </p>
+                    </div>
+
+                    <div className='relative z-10 flex items-center justify-between text-[#b0ada8] text-xs border-t border-white/[0.05] pt-4 mt-auto'>
+                      <div className='flex items-center gap-1.5'>
+                        <div className='w-1.5 h-1.5 rounded-full bg-[#e70f5b] opacity-70 group-hover:animate-pulse' />
+                        <span>{dateStr}</span>
+                      </div>
+                      <span className='opacity-60'>{timeStr}</span>
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+        )}
       </div>
     </main>
   )
