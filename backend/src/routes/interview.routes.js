@@ -1,7 +1,7 @@
 import express from "express";
 import { authUser } from "../middlewares/auth.middleware.js";
 import { upload } from "../middlewares/file.middleware.js";
-import { generateReportController, getAllInterviewReportsController, getInterviewReportByIdController } from "../controller/interview.controller.js";
+import { generateReportController, generateResumePdfController, getAllInterviewReportsController, getInterviewReportByIdController } from "../controller/interview.controller.js";
 export const InterviewRouter= express.Router();
 
 /**
@@ -25,3 +25,11 @@ InterviewRouter.get("/reports/:interviewId", authUser, getInterviewReportByIdCon
  * @access private
  */
 InterviewRouter.get("/", authUser, getAllInterviewReportsController);
+
+/**
+ * @route GET /api/interview/resume/pdf
+ * @desc Generate a resume pdf based on user self description, resume content and job description. The generated pdf is returned as a blob to the frontend.
+ * @access private
+ */
+
+InterviewRouter.post("/resume/pdf/:interviewReportId", authUser, generateResumePdfController)

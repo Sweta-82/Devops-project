@@ -26,6 +26,7 @@
     "pdf": "^0.1.0",
     "pdf-parse": "^2.4.3",
     "pdf-parse-fork": "^1.2.0",
+    "puppeteer": "^24.43.1",
     "zod": "^4.4.3",
     "zod-to-json-schema": "^3.25.2"
   }

@@ -1,6 +1,6 @@
 import { PDFParse } from "pdf-parse";
 
-import { generateReport } from "../services/ai.service.js";
+import { generateReport, generateResumePdf } from "../services/ai.service.js";
 import ReportModel from "../models/report.model.js";
 
 export async function generateReportController(req, res) {
@@ -94,6 +94,32 @@ export async function getAllInterviewReportsController(req, res) {
         interviewReports
     })
 }
+
+
+/**
+ * @description Controller to generate resume pdf based on user self description, resume content and job description.
+ * The generated pdf is returned as a blob to the frontend.
+ */
+export async function generateResumePdfController(req, res) {
+    const { interviewReportId } = req.params;
+    const interviewReport = await ReportModel.findOne({ _id: interviewReportId, user: req.user.id })
+    if (!interviewReport) {
+        return res.status(404).json({
+            message: "Interview report not found."
+        })
+    }
+    const {resumeText,jobDescription,selfDescription} = interviewReport;
+    const resumePdfBuffer = await generateResumePdf({resume: resumeText, jobDescription, selfDescription});
+
+    res.set({
+        "Content-Type": "application/pdf",
+        "Content-Disposition": `inline; filename=resume_${interviewReportId}.pdf`
+    });
+
+    res.send(resumePdfBuffer);
+}
+
+
 
 
 
