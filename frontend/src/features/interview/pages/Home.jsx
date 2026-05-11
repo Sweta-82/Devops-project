@@ -6,12 +6,14 @@ import { useInterview } from '../hooks/UseInterview.js'
 const Home = () => {
   const [fileName, setFileName] = useState(null)
   const [jdCount, setJdCount] = useState(0)
+  const [jobDescription, setJobDescription] = useState("")
+  const [selfDescription, setSelfDescription] = useState("")
   const fileRef = useRef();
 const { loading, generateReport } = useInterview();
   const navigate= useNavigate();
   const handleGenerateReport= async()=>{
     const resumeFile= fileRef.current?.files?.[0] || null;
-   const data= await generateReport({ jobDescription:"same data", selfDescription:"same data", resumeFile })
+   const data= await generateReport({ jobDescription, selfDescription, resumeFile })
    if (data?._id) {
       console.log("Home jsx", data._id);
       navigate(`/interview/report/${data._id}`)
@@ -52,7 +54,11 @@ const { loading, generateReport } = useInterview();
             <textarea
               rows={16}
               placeholder='Paste job description here...'
-              onChange={e => setJdCount(e.target.value.length)}
+              value={jobDescription}
+              onChange={e => {
+                setJobDescription(e.target.value)
+                setJdCount(e.target.value.length)
+              }}
               className='flex-1 w-full bg-[#0a0810]/70 border border-white/[0.07] rounded-xl p-4
                 text-[#d0cdc8] text-sm outline-none resize-none placeholder-[#2e2c2a]
                 focus:border-[#e70f5b]/40 focus:shadow-[0_0_0_3px_rgba(231,15,91,0.07)]
@@ -111,6 +117,8 @@ const { loading, generateReport } = useInterview();
               <textarea
                 rows={5}
                 placeholder='e.g. 3 years in full stack, strong React & Node, targeting senior roles...'
+                value={selfDescription}
+                onChange={e => setSelfDescription(e.target.value)}
                 className='w-full bg-[#0a0810]/70 border border-white/[0.07] rounded-xl p-4
                   text-[#d0cdc8] text-sm outline-none resize-none placeholder-[#2e2c2a]
                   focus:border-[#e70f5b]/40 focus:shadow-[0_0_0_3px_rgba(231,15,91,0.07)]
