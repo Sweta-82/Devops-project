@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
-import { Code2, MessageSquare, Map, ChevronDown, LayoutDashboard, User, Calendar, Star, Download } from 'lucide-react'
+import { Code2, MessageSquare, Map, ChevronDown, LayoutDashboard, User, Calendar, Star, Download, LogOut } from 'lucide-react'
 import { useInterview } from '../hooks/UseInterview.js'
+import { useAuth } from '../../../hooks/UseAuth.js'
 
 
 
@@ -61,6 +62,7 @@ const Interview = () => {
   const [tab, setTab] = useState('technical')
   const [downloadingPdf, setDownloadingPdf] = useState(false)
   const { report, getResumePdf } = useInterview();
+  const { handleLogout } = useAuth();
   if (!report) {
    return (
       <div className="text-white p-10">
@@ -162,6 +164,18 @@ const Interview = () => {
                   Download Resume
                 </>
               )}
+            </button>
+
+            <button
+              onClick={handleLogout}
+              className='w-full flex items-center justify-center gap-2 py-2.5 rounded-xl text-xs font-medium mt-2 transition-all duration-200 hover:bg-white/[0.04]'
+              style={{
+                border: '1px solid rgba(255,255,255,0.07)',
+                color: '#5a5855',
+              }}
+            >
+              <LogOut size={13} strokeWidth={2} />
+              Logout
             </button>
           </div>
         </div>
