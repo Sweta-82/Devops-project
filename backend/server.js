@@ -16,10 +16,9 @@ connectDB();
 //     jobDescription: "We are looking for a skilled software engineer to join our team. The ideal candidate should have experience in full stack development, be proficient in React and Node.js, and have a strong understanding of computer science fundamentals. The candidate should also be a good communicator and be able to work well in a team environment."
 // })
 
-
-app.get('/',(req,res)=>{
-    res.send('Working ');
-})
+// app.get('/',(req,res)=>{
+//     res.send('Working ');
+// })
 
 app.listen(3000,()=>{
     console.log('Server is running on port 3000');

@@ -4,7 +4,7 @@ const app=express();
 import authRouter from './routes/auth.route.js';
 import cookieParser from "cookie-parser";
 import { InterviewRouter } from './routes/interview.routes.js';
-
+app.use(express.static('public'));
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
