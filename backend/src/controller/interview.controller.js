@@ -108,8 +108,8 @@ export async function generateResumePdfController(req, res) {
             message: "Interview report not found."
         })
     }
-    const {resumeText,jobDescription,selfDescription} = interviewReport;
-    const resumePdfBuffer = await generateResumePdf({resume: resumeText, jobDescription, selfDescription});
+    const { resumeText, jobDescription, selfDescription } = interviewReport;
+    const resumePdfBuffer = await generateResumePdf({ resume: resumeText, jobDescription, selfDescription });
 
     res.set({
         "Content-Type": "application/pdf",
