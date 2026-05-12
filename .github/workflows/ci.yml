@@ -34,4 +34,4 @@ jobs:
           npm install
 
       - name: Build Docker Image
-        run: docker build -t genai-img ./backend
+        run: docker build -t skillsync .
