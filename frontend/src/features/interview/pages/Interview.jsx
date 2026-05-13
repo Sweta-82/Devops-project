@@ -62,7 +62,8 @@ const Interview = () => {
   const [tab, setTab] = useState('technical')
   const [downloadingPdf, setDownloadingPdf] = useState(false)
   const { report, getResumePdf } = useInterview();
-  const { handleLogout } = useAuth();
+  const { handleLogout, user } = useAuth();
+  const candidateName = report?.candidateName || user?.username || "Candidate";
   if (!report) {
    return (
       <div className="text-white p-10">
@@ -108,10 +109,10 @@ const Interview = () => {
             style={{ background: 'rgba(231,15,91,0.06)', border: '1px solid rgba(231,15,91,0.12)' }}>
             <div className='w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-bold shrink-0'
               style={{ background: 'rgba(231,15,91,0.15)', color: '#e70f5b' }}>
-              {(report.candidateName || "Sweta Kumari").split(' ').map(n => n[0]).join('')}
+              {candidateName.split(' ').map(n => n[0]).join('')}
             </div>
             <div>
-              <p className='text-[11px] font-semibold text-[#d0cdc8] leading-none'>{report.candidateName || "Sweta Kumari"}</p>
+              <p className='text-[11px] font-semibold text-[#d0cdc8] leading-none'>{candidateName}</p>
               <p className='text-[10px] text-[#5a5855] mt-0.5'>{report.title}</p>
             </div>
           </div>
@@ -188,7 +189,7 @@ const Interview = () => {
             <div>
               <h2 className='font-bold text-[#f0ede8] mb-0.5 text-[1.05rem]'
                 style={{ fontFamily: 'Syne, sans-serif' }}>Overview</h2>
-              <p className='text-[11px] text-[#5a5855] mb-5'>Full report summary for {report.candidateName}</p>
+              <p className='text-[11px] text-[#5a5855] mb-5'>Full report summary for {candidateName}</p>
 
               {/* Stats row */}
               <div className='grid grid-cols-2 gap-3 mb-4'>

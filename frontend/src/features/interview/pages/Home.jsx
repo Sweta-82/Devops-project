@@ -20,7 +20,6 @@ const { loading, generateReport, reports, getReports } = useInterview();
     const resumeFile= fileRef.current?.files?.[0] || null;
    const data= await generateReport({ jobDescription, selfDescription, resumeFile })
    if (data?._id) {
-      console.log("Home jsx", data._id);
       navigate(`/interview/report/${data._id}`)
     }
   }

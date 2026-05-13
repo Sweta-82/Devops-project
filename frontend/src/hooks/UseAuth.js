@@ -10,7 +10,6 @@ export const useAuth=()=>{
             const data=await login({email, password})
             setUser(data.user);
         } catch (error) {
-            console.log(error)
         }finally{
             setLoading(false);
         }
@@ -23,7 +22,6 @@ export const useAuth=()=>{
             const data= await register({username, email, password});
             setUser(data.user);
         } catch (error) {
-            console.log(error)
         }finally{
             setLoading(false);
         }
@@ -35,7 +33,6 @@ export const useAuth=()=>{
             setUser(null);
             
         } catch (error) {
-            console.log(error)
         } finally{
             setLoading(false);
         }
@@ -49,7 +46,7 @@ useEffect(() => {
                 setUser(data.user);
             }
         } catch (error) {
-            console.log(error);
+
             setUser(null);
         } finally {
             setLoading(false);
