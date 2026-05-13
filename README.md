@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="./assets/landing-page.png" alt="SkillSync Banner" width="100%">
+  
 
   # ⚡ SkillSync
   
