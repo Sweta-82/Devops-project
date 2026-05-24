@@ -178,8 +178,9 @@ const Interview = () => {
               <LogOut size={13} strokeWidth={2} />
               Logout
             </button>
+            </div>
           </div>
-        </div>
+        
 
         {/* ── MAIN CONTENT ── */}
         <div className='flex-1 overflow-y-auto p-6' style={{ scrollbarWidth: 'thin' }}>
